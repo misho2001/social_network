@@ -2,26 +2,51 @@ const form = document.getElementById("loginForm");
 const forgot = document.getElementById("forgot");
 const create = document.getElementById("create");
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  // Demo only: no credentials are transmitted or stored.
-  const email = document.getElementById("email");
-  const password = document.getElementById("password");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
 
-  if (!email.value.trim() || !password.value.trim()) {
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
+
+  if (!email || !password) {
     alert("Please fill in both fields.");
     return;
   }
 
-  alert("Demo page: this form does not send or store login information.");
+  try {
+    // მოთხოვნის გაგზავნა Java Spring Boot სერვერზე
+    const response = await fetch("http://localhost:8080/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      alert("მონაცემები წარმატებით შეინახა TiDB ბაზაში!");
+      // სურვილისამებრ შეგიძლიათ ფორმის გასუფთავება:
+      form.reset();
+    } else {
+      alert("შეცდომა: " + (data.message || "ვერ მოხერხდა შენახვა"));
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+    alert("სერვერთან კავშირის შეცდომა! დარწმუნდით, რომ Spring Boot სერვერი ჩართულია.");
+  }
 });
 
 forgot.addEventListener("click", (event) => {
   event.preventDefault();
-  alert("Password recovery is disabled in this front-end demo.");
+  alert("Password recovery is disabled.");
 });
 
-create.addEventListener("click", () => {
-  alert("Account creation is disabled in this front-end demo.");
+create.addEventListener("click", (e) => {
+  e.preventDefault();
+  alert("Account creation redirection or modal goes here.");
 });
