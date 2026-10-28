@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       success: true,
-      message: "Error 404 try again later."
+      message: "Error try again later."
     });
   } catch (error) {
     console.error("Database error:", error.message);
