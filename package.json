@@ -9,9 +9,26 @@
   "dependencies": {
     "@tidbcloud/serverless": "^0.3.0",
     "bcryptjs": "^3.0.3",
-    "jose": "^6.2.13"
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "jose": "^6.2.13",
+    "mysql2": "^3.24.6"
   },
   "devDependencies": {
     "vercel": "^48.0.0"
-  }
+  },
+  "description": "demo app with login page\r similar to facebook",
+  "main": "script.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/misho2001/social_network.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/misho2001/social_network/issues"
+  },
+  "homepage": "https://github.com/misho2001/social_network#readme"
 }
