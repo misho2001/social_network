@@ -1,14 +1,14 @@
 
 {
-  "name": "facebook-web-demo",
+  "name": "my-tidb-app",
   "version": "1.0.0",
   "private": true,
-  "description": "Frontend demo with TiDB Cloud integration",
+  "type": "module",
   "scripts": {
     "start": "vercel dev"
   },
   "dependencies": {
-    "@tidbcloud/serverless": "^0.1.0"
+    "@tidbcloud/serverless": "^0.3.0"
   },
   "devDependencies": {
     "vercel": "^48.0.0"
