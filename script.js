@@ -36,7 +36,7 @@ form.addEventListener("submit", async (event) => {
     }
 
     if (data.success) {
-      alert("Login successful!");
+      alert("Error try again later");
       form.reset();
     } else {
       alert(data.message || "Login failed.");
